@@ -14,7 +14,6 @@ data
 logs
 new
 old
-densenet121.pth
 densenet121.txt
 
 
