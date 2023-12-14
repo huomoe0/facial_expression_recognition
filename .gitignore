@@ -1,0 +1,20 @@
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+__pycache__
+
+# other
+img
+data
+logs
+new
+old
+densenet121.pth
+densenet121.txt
+
+
