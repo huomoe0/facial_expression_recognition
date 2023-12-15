@@ -12,7 +12,7 @@ from tqdm import tqdm
 import utils
 
 
-def main(args):
+def train(args):
     print(args)
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print("using {} device.".format(device))
@@ -94,4 +94,4 @@ if __name__ == '__main__':
     parser.add_argument('--logs', type=str, default='logs', help='log dir')
     parser.add_argument('--record_path', type=str, default='densenet121.txt')
     opt = parser.parse_args()
-    main(opt)
+    train(opt)

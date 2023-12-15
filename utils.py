@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 mean = [0.5924, 0.5461, 0.5246]
 std = [0.3553, 0.3625, 0.3698]
+class_list = ['anger', 'disgust', 'fear', 'happiness', 'neutral', 'sadness', 'surprise']
 
 data_transform = {
     "train": transforms.Compose([transforms.RandomResizedCrop(224),
@@ -17,7 +18,11 @@ data_transform = {
                                  transforms.Normalize(mean, std)]),
     "val": transforms.Compose([transforms.Resize((224, 224)),
                                transforms.ToTensor(),
-                               transforms.Normalize(mean, std)])}
+                               transforms.Normalize(mean, std)]),
+    "predict": transforms.Compose([transforms.Resize(256),
+                                   transforms.CenterCrop(224),
+                                   transforms.ToTensor(),
+                                   transforms.Normalize(mean, std)])}
 
 
 def getDataLoader(data_path, batch_size, nw):
@@ -57,10 +62,7 @@ def add2tensorboard(writer, epoch, running_loss, val_loss, acc, precision, recal
 
 
 def load_record(path):
-    best_acc = 0
-    total_epoch = 0
-    best_precision = 0
-    best_recall = 0
+    best_acc = total_epoch = best_precision = best_recall = 0
     if os.path.exists(path):
         with open(path, "r") as f:
             best_acc = float(f.readline())
@@ -81,10 +83,7 @@ def save_record(path, acc, precision, recall, epoch):
 def validate(model, device, validate_loader, loss_function, val_num):
     val_steps = len(validate_loader)
     model.eval()
-    acc = 0
-    precision = 0
-    recall = 0
-    val_loss = 0
+    acc = precision = recall = val_loss = 0
     with torch.no_grad():
         val_bar = tqdm(validate_loader)
         for val_data in val_bar:
